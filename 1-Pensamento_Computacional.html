@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workshop: Pensamento Computacional</title>
+  <style>
+    /* ====== VARIÁVEIS DE CORES ====== */
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --success: #27ae60;
+      --warning: #f39c12;
+      --danger: #e74c3c;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --gray: #7f8c8d;
+    }
+
+    /* ====== ESTILOS GERAIS ====== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      scroll-behavior: smooth;
+    }
+
+    /* ====== NAVEGAÇÃO ====== */
+    .navbar {
+      background-color: var(--primary);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    .nav-link.active {
+      background-color: var(--secondary);
+    }
+
+    /* ====== SEÇÕES PRINCIPAIS ====== */
+    section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+      color: white;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: var(--success);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background-color: #229954;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border: 2px solid white;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+      text-align: center;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--secondary);
+    }
+
+    /* ====== CONTEÚDO DOS EXEMPLOS ====== */
+    .example-container {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 3rem;
+    }
+
+    .example-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .example-number {
+      background-color: var(--secondary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--light);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ====== COMPONENTES COMUNS ====== */
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .steps-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      background-color: var(--light);
+      border-radius: 5px;
+      opacity: 0.5;
+      min-width: 150px;
+    }
+
+    .step.active {
+      opacity: 1;
+      background-color: var(--secondary);
+      color: white;
+      font-weight: bold;
+    }
+
+    .result-box {
+      padding: 1.5rem;
+      border-radius: 5px;
+      margin-top: 2rem;
+      display: none;
+    }
+
+    .code-box {
+      background-color: #2d2d2d;
+      color: #f8f8f2;
+      padding: 1.5rem;
+      border-radius: 5px;
+      margin-top: 2rem;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      display: none;
+    }
+
+    .comment {
+      color: #75715e;
+    }
+
+    /* ====== EXEMPLO 1 - SISTEMA DE APROVAÇÃO ====== */
+    .result-aprovado {
+      background-color: rgba(39, 174, 96, 0.1);
+      border-left: 5px solid var(--success);
+      color: #1e7e34;
+    }
+
+    .result-recuperacao {
+      background-color: rgba(243, 156, 18, 0.1);
+      border-left: 5px solid var(--warning);
+      color: #856404;
+    }
+
+    .result-reprovado {
+      background-color: rgba(231, 76, 60, 0.1);
+      border-left: 5px solid var(--danger);
+      color: #721c24;
+    }
+
+    /* ====== EXEMPLO 2 - ORGANIZADOR DE TAREFAS ====== */
+    .task-list {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+
+    .task-item {
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border-radius: 5px;
+      background-color: var(--light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideIn 0.3s;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-10px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .task-priority-alta {
+      border-left: 5px solid var(--danger);
+    }
+
+    .task-priority-normal {
+      border-left: 5px solid var(--gray);
+    }
+
+    .priority-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .priority-alta {
+      background-color: rgba(231, 76, 60, 0.2);
+      color: var(--danger);
+    }
+
+    .priority-normal {
+      background-color: rgba(127, 140, 141, 0.2);
+      color: var(--gray);
+    }
+
+    /* ====== EXEMPLO 3 - SEMÁFORO ====== */
+    .traffic-light-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    .traffic-light {
+      width: 140px;
+      padding: 20px;
+      background-color: #222;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .light {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #333;
+    }
+
+    .light.active.red {
+      background-color: var(--danger);
+      box-shadow: 0 0 20px rgba(231, 76, 60, 0.7);
+    }
+
+    .light.active.yellow {
+      background-color: var(--warning);
+      box-shadow: 0 0 20px rgba(243, 156, 18, 0.7);
+    }
+
+    .light.active.green {
+      background-color: var(--success);
+      box-shadow: 0 0 20px rgba(39, 174, 96, 0.7);
+    }
+
+    .control-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    /* ====== KAHOOT ====== */
+    .kahoot-container {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .question {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .option {
+      padding: 1.5rem;
+      background-color: var(--light);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .option:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .option.selected {
+      border-color: var(--secondary);
+      background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    .option.correct {
+      border-color: var(--success);
+      background-color: rgba(39, 174, 96, 0.1);
+    }
+
+    .option.incorrect {
+      border-color: var(--danger);
+      background-color: rgba(231, 76, 60, 0.1);
+    }
+
+    .score-container {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: var(--light);
+      border-radius: 5px;
+    }
+
+    /* ====== RODAPÉ ====== */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--primary);
+      color: white;
+      margin-top: 4rem;
+    }
+
+    /* ====== RESPONSIVIDADE ====== */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+      
+      .steps-container {
+        flex-direction: column;
+      }
+      
+      .tab-buttons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navegação -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">Pensamento Computacional</div>
+      <div class="nav-links">
+        <a href="#intro" class="nav-link active">Introdução</a>
+        <a href="#exemplos" class="nav-link">Exemplos</a>
+        <a href="#kahoot" class="nav-link">Kahoot</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Seção Hero -->
+  <section class="hero" id="intro">
+    <h1>Workshop: Pensamento Computacional</h1>
+    <p>Aprenda a resolver problemas de forma lógica e estruturada através de três exemplos práticos e interativos. Descubra como o pensamento computacional pode ser aplicado em situações do dia a dia.</p>
+    <a href="#exemplos" class="btn">Começar a Explorar</a>
+  </section>
+
+  <!-- Seção de Exemplos -->
+  <section id="exemplos">
+    <h2>Três Exemplos Práticos</h2>
+    <p style="text-align: center; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+      Explore três sistemas que demonstram diferentes aspectos do pensamento computacional. Cada exemplo aborda um conceito fundamental: decisão, organização e estados.
+    </p>
+
+    <!-- Exemplo 1: Sistema de Aprovação -->
+    <div class="example-container">
+      <div class="example-header">
+        <div>
+          <h3>1. Sistema de Aprovação</h3>
+          <p>Entenda como um sistema toma decisões com base em regras simples.</p>
+        </div>
+        <div class="example-number">1</div>
+      </div>
+
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="problema1">O Problema</button>
+        <button class="tab-btn" data-tab="solucao1">Solução Interativa</button>
+        <button class="tab-btn" data-tab="codigo1">Como Funciona</button>
+      </div>
+
+      <div id="problema1" class="tab-content active">
+        <p>Um professor precisa de um sistema que determine automaticamente se um aluno está <strong>aprovado</strong>, em <strong>recuperação</strong> ou <strong>reprovado</strong> com base na nota final.</p>
+        <p><strong>Regras:</strong></p>
+        <ul style="margin-left: 2rem; margin-top: 1rem;">
+          <li>Nota ≥ 6.0: Aprovado</li>
+          <li>Nota ≥ 4.0 e &lt; 6.0: Recuperação</li>
+          <li>Nota &lt; 4.0: Reprovado</li>
+        </ul>
+        <p style="margin-top: 1rem;">Este é um exemplo clássico de <strong>tomada de decisão</strong> em programação, usando estruturas condicionais (if/else).</p>
+      </div>
+
+      <div id="solucao1" class="tab-content">
+        <div class="input-group">
+          <label for="nota">Digite a nota do aluno (0 a 10):</label>
+          <input type="number" id="nota" min="0" max="10" step="0.1" value="7.5">
+        </div>
+        <button class="btn" id="avaliar-btn">Avaliar Nota</button>
+
+        <div class="steps-container">
+          <div class="step" id="step1-1">Entrada da Nota</div>
+          <div class="step" id="step1-2">Comparação</div>
+          <div class="step" id="step1-3">Tomada de Decisão</div>
+          <div class="step" id="step1-4">Resultado Final</div>
+        </div>
+
+        <div class="result-box" id="resultado1"></div>
+      </div>
+
+      <div id="codigo1" class="tab-content">
+        <div class="code-box">
+          <pre><code>// 1. Recebemos a nota digitada pelo usuário
+<span class="comment">// Esta é a entrada do sistema</span>
+const nota = obterNotaDoUsuario();
+
+// 2. Definimos as regras de aprovação
+<span class="comment">// Valores fixos que o sistema conhece</span>
+const MEDIA_APROVACAO = 6.0;
+const MEDIA_RECUPERACAO = 4.0;
+
+// 3. O sistema compara e decide
+<span class="comment">// Aqui acontece o pensamento computacional!</span>
+let resultado;
+
+if (nota >= MEDIA_APROVACAO) {
+    resultado = "Aprovado";
+} else if (nota >= MEDIA_RECUPERACAO) {
+    resultado = "Recuperação";
+} else {
+    resultado = "Reprovado";
+}
+
+// 4. Mostramos o resultado ao usuário
+<span class="comment">// Finalizamos o processo com uma saída</span>
+exibirResultado(resultado);</code></pre>
+        </div>
+        <p style="margin-top: 1rem;">Observe como o sistema segue um fluxo lógico: <strong>entrada → processamento → saída</strong>. Este é o coração do pensamento computacional.</p>
+      </div>
+    </div>
+
+    <!-- Exemplo 2: Organizador de Tarefas -->
+    <div class="example-container">
+      <div class="example-header">
+        <div>
+          <h3>2. Organizador de Tarefas</h3>
+          <p>Veja como um sistema organiza informações com base em prioridades.</p>
+        </div>
+        <div class="example-number">2</div>
+      </div>
+
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="problema2">O Problema</button>
+        <button class="tab-btn" data-tab="solucao2">Solução Interativa</button>
+        <button class="tab-btn" data-tab="codigo2">Como Funciona</button>
+      </div>
+
+      <div id="problema2" class="tab-content active">
+        <p>Precisamos de um sistema que organize tarefas, mostrando primeiro as de <strong>alta prioridade</strong> e depois as de <strong>prioridade normal</strong>.</p>
+        <p><strong>Funcionamento:</strong></p>
+        <ul style="margin-left: 2rem; margin-top: 1rem;">
+          <li>O usuário adiciona tarefas com descrição e prioridade</li>
+          <li>O sistema organiza automaticamente as tarefas</li>
+          <li>Tarefas de alta prioridade aparecem no topo da lista</li>
+        </ul>
+        <p style="margin-top: 1rem;">Este exemplo demonstra como trabalhar com <strong>coleções de dados</strong> e <strong>regras de organização</strong>.</p>
+      </div>
+
+      <div id="solucao2" class="tab-content">
+        <div class="input-group">
+          <label for="tarefa">Descrição da tarefa:</label>
+          <input type="text" id="tarefa" placeholder="Ex: Estudar para a prova de matemática">
+        </div>
+        <div class="input-group">
+          <label for="prioridade">Prioridade:</label>
+          <select id="prioridade">
+            <option value="normal">Normal</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+        <button class="btn" id="adicionar-btn">Adicionar Tarefa</button>
+
+        <div class="steps-container">
+          <div class="step" id="step2-1">Entrada dos Dados</div>
+          <div class="step" id="step2-2">Classificação por Prioridade</div>
+          <div class="step" id="step2-3">Organização da Lista</div>
+          <div class="step" id="step2-4">Exibição Ordenada</div>
+        </div>
+
+        <ul class="task-list" id="lista-tarefas">
+          <li class="task-item task-priority-alta">
+            <span>Preparar apresentação do workshop</span>
+            <span class="priority-badge priority-alta">Alta Prioridade</span>
+          </li>
+          <li class="task-item task-priority-normal">
+            <span>Revisar exercícios de lógica</span>
+            <span class="priority-badge priority-normal">Prioridade Normal</span>
+          </li>
+        </ul>
+      </div>
+
+      <div id="codigo2" class="tab-content">
+        <div class="code-box">
+          <pre><code>// 1. Criamos uma lista vazia para armazenar tarefas
+<span class="comment">// Esta é nossa estrutura de dados principal</span>
+let listaDeTarefas = [];
+
+// 2. Função para adicionar uma nova tarefa
+function adicionarTarefa(descricao, prioridade) {
+    
+    // Criamos um objeto representando a tarefa
+    const tarefa = {
+        descricao: descricao,
+        prioridade: prioridade,
+        dataCriacao: new Date()
+    };
+    
+    // 3. Decidimos onde colocar na lista
+    <span class="comment">// Tarefas de alta prioridade vão para o início</span>
+    if (prioridade === "alta") {
+        listaDeTarefas.unshift(tarefa); <span class="comment">// Adiciona no início</span>
+    } else {
+        listaDeTarefas.push(tarefa); <span class="comment">// Adiciona no final</span>
+    }
+    
+    // 4. Atualizamos a exibição
+    atualizarListaDeTarefas();
+}
+
+// 5. Função para exibir as tarefas organizadas
+function atualizarListaDeTarefas() {
+    <span class="comment">// Percorremos toda a lista e criamos a exibição</span>
+    for (let tarefa of listaDeTarefas) {
+        criarElementoTarefa(tarefa);
+    }
+}</code></pre>
+        </div>
+        <p style="margin-top: 1rem;">Neste sistema, as tarefas são <strong>objetos</strong> com propriedades, e a lista é <strong>dinamicamente reorganizada</strong> conforme novas tarefas são adicionadas.</p>
+      </div>
+    </div>
+
+    <!-- Exemplo 3: Semáforo Inteligente -->
+    <div class="example-container">
+      <div class="example-header">
+        <div>
+          <h3>3. Semáforo Inteligente</h3>
+          <p>Entenda como um sistema muda de estado automaticamente ao longo do tempo.</p>
+        </div>
+        <div class="example-number">3</div>
+      </div>
+
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="problema3">O Problema</button>
+        <button class="tab-btn" data-tab="solucao3">Solução Interativa</button>
+        <button class="tab-btn" data-tab="codigo3">Como Funciona</button>
+      </div>
+
+      <div id="problema3" class="tab-content active">
+        <p>Um semáforo precisa alternar automaticamente entre três estados: <strong>vermelho</strong>, <strong>verde</strong> e <strong>amarelo</strong>, seguindo uma sequência fixa e temporizada.</p>
+        <p><strong>Sequência do semáforo:</strong></p>
+        <ol style="margin-left: 2rem; margin-top: 1rem;">
+          <li>Verde (20 segundos) - carros podem passar</li>
+          <li>Amarelo (5 segundos) - atenção, vai fechar</li>
+          <li>Vermelho (15 segundos) - carros devem parar</li>
+          <li>Volta para o verde (e repete)</li>
+        </ol>
+        <p style="margin-top: 1rem;">Este exemplo demonstra <strong>sistemas baseados em estados</strong> e <strong>controle por tempo</strong>.</p>
+      </div>
+
+      <div id="solucao3" class="tab-content">
+        <div class="traffic-light-container">
+          <div class="traffic-light">
+            <div class="light red active" id="luz-vermelha"></div>
+            <div class="light yellow" id="luz-amarela"></div>
+            <div class="light green" id="luz-verde"></div>
+          </div>
+        </div>
+
+        <div class="steps-container">
+          <div class="step" id="step3-1">Estado Atual</div>
+          <div class="step" id="step3-2">Contagem de Tempo</div>
+          <div class="step" id="step3-3">Transição</div>
+          <div class="step" id="step3-4">Novo Estado</div>
+        </div>
+
+        <div class="control-buttons">
+          <button class="btn" id="iniciar-btn">Iniciar Semáforo</button>
+          <button class="btn" id="pausar-btn" style="background-color: #7f8c8d;">Pausar</button>
+          <button class="btn" id="resetar-btn" style="background-color: #e74c3c;">Resetar</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+          <p><strong>Estado atual:</strong> <span id="estado-atual">Vermelho</span></p>
+          <p><strong>Próxima mudança em:</strong> <span id="contador">15</span> segundos</p>
+        </div>
+      </div>
+
+      <div id="codigo3" class="tab-content">
+        <div class="code-box">
+          <pre><code>// 1. Definimos os estados possíveis do semáforo
+<span class="comment">// Um sistema pode estar em apenas um estado por vez</span>
+const ESTADOS = {
+    VERMELHO: "vermelho",
+    VERDE: "verde",
+    AMARELO: "amarelo"
+};
+
+// 2. Definimos quanto tempo cada estado dura
+<span class="comment">// Estes são os parâmetros do sistema</span>
+const TEMPOS = {
+    VERMELHO: 15000, <span class="comment">// 15 segundos</span>
+    VERDE: 20000,    <span class="comment">// 20 segundos</span>
+    AMARELO: 5000     <span class="comment">// 5 segundos</span>
+};
+
+// 3. Variável para armazenar o estado atual
+let estadoAtual = ESTADOS.VERMELHO;
+
+// 4. Função para mudar para o próximo estado
+function proximoEstado() {
+    
+    <span class="comment">// 5. Definimos a sequência de estados</span>
+    if (estadoAtual === ESTADOS.VERMELHO) {
+        estadoAtual = ESTADOS.VERDE;
+    } else if (estadoAtual === ESTADOS.VERDE) {
+        estadoAtual = ESTADOS.AMARELO;
+    } else {
+        estadoAtual = ESTADOS.VERMELHO;
+    }
+    
+    // 6. Atualizamos a interface
+    atualizarSemafaroVisual();
+    
+    // 7. Programamos a próxima mudança
+    agendarProximaMudanca();
+}
+
+// 8. Função que agenda a próxima transição
+function agendarProximaMudanca() {
+    
+    <span class="comment">// Usamos setTimeout para agendar uma ação futura</span>
+    const tempo = TEMPOS[estadoAtual.toUpperCase()];
+    
+    setTimeout(proximoEstado, tempo);
+}</code></pre>
+        </div>
+        <p style="margin-top: 1rem;">Este sistema é um exemplo clássico de <strong>máquina de estados</strong>, onde cada estado tem uma duração específica e transições bem definidas para o próximo estado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção Kahoot -->
+  <section id="kahoot">
+    <h2>Teste Seu Conhecimento</h2>
+    <p style="text-align: center; margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+      Responda às perguntas abaixo para fixar o que aprendeu nos exemplos. Cada resposta correta vale 10 pontos!
+    </p>
+
+    <div class="kahoot-container">
+      <div id="quiz-container">
+        <div class="question" id="pergunta">Pergunta 1: No Sistema de Aprovação, qual estrutura de programação é utilizada para tomar decisões?</div>
+        
+        <div class="options" id="opcoes">
+          <div class="option" data-correct="true">Estruturas condicionais (if/else)</div>
+          <div class="option" data-correct="false">Laços de repetição (for/while)</div>
+          <div class="option" data-correct="false">Funções matemáticas</div>
+          <div class="option" data-correct="false">Variáveis globais</div>
+        </div>
+        
+        <button class="btn" id="verificar-btn" style="margin-right: 1rem;">Verificar Resposta</button>
+        <button class="btn" id="proxima-btn">Próxima Pergunta</button>
+        
+        <div id="feedback" style="margin-top: 1.5rem; padding: 1rem; border-radius: 5px; display: none;"></div>
+        
+        <div class="score-container">
+          Pontuação: <span id="pontuacao">0</span> pontos
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>Workshop de Pensamento Computacional - Desenvolvido para iniciantes em programação</p>
+    <p style="margin-top: 1rem; opacity: 0.8;">Use estes exemplos como ponto de partida para explorar o mundo do desenvolvimento de sistemas!</p>
+  </footer>
+
+  <script>
+    // ====== INICIALIZAÇÃO DAS ABAS ======
+    // Sistema de abas para navegação entre conteúdo
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Obtém o ID da aba clicada
+        const tabId = this.getAttribute('data-tab');
+        
+        // Encontra o container do exemplo
+        const container = this.closest('.example-container');
+        
+        // Remove a classe 'active' de todos os botões de aba deste container
+        container.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+        });
+        
+        // Adiciona a classe 'active' ao botão clicado
+        this.classList.add('active');
+        
+        // Remove a classe 'active' de todos os conteúdos de aba deste container
+        container.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        // Adiciona a classe 'active' ao conteúdo correspondente
+        const targetContent = container.querySelector(`#${tabId}`);
+        if (targetContent) {
+          targetContent.classList.add('active');
+        }
+      });
+    });
+
+    // Navegação suave
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        // Atualiza navegação ativa
+        document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Rolagem suave
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // ====== EXEMPLO 1: SISTEMA DE APROVAÇÃO ======
+    document.getElementById('avaliar-btn').addEventListener('click', function() {
+      // Reseta etapas visuais
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step1-${i}`).classList.remove('active');
+      }
+      
+      // Passo 1: Entrada da nota
+      document.getElementById('step1-1').classList.add('active');
+      const notaInput = document.getElementById('nota');
+      const nota = parseFloat(notaInput.value);
+      
+      // Validação da entrada
+      if (isNaN(nota) || nota < 0 || nota > 10) {
+        alert('Por favor, digite uma nota válida entre 0 e 10.');
+        return;
+      }
+      
+      // Simula o processamento passo a passo com pequenos atrasos
+      setTimeout(() => {
+        // Passo 2: Comparação
+        document.getElementById('step1-2').classList.add('active');
+        
+        setTimeout(() => {
+          // Passo 3: Tomada de decisão
+          document.getElementById('step1-3').classList.add('active');
+          
+          setTimeout(() => {
+            // Passo 4: Resultado final
+            document.getElementById('step1-4').classList.add('active');
+            
+            // Determina resultado baseado nas regras
+            let resultado, classe;
+            if (nota >= 6.0) {
+              resultado = 'Aprovado';
+              classe = 'result-aprovado';
+            } else if (nota >= 4.0) {
+              resultado = 'Recuperação';
+              classe = 'result-recuperacao';
+            } else {
+              resultado = 'Reprovado';
+              classe = 'result-reprovado';
+            }
+            
+            // Exibe o resultado para o usuário
+            const resultadoDiv = document.getElementById('resultado1');
+            resultadoDiv.textContent = `Resultado: ${resultado} (Nota: ${nota.toFixed(1)})`;
+            resultadoDiv.className = `result-box ${classe}`;
+            resultadoDiv.style.display = 'block';
+            
+            // Mostra o código para referência
+            const codeBox = document.querySelector('#codigo1 .code-box');
+            if (codeBox) {
+              codeBox.style.display = 'block';
+            }
+          }, 500); // Pequeno atraso para a etapa 4
+        }, 500); // Pequeno atraso para a etapa 3
+      }, 500); // Pequeno atraso para a etapa 2
+    });
+
+    // ====== EXEMPLO 2: ORGANIZADOR DE TAREFAS ======
+    document.getElementById('adicionar-btn').addEventListener('click', function() {
+      // Reseta as etapas visuais
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step2-${i}`).classList.remove('active');
+      }
+      
+      // Passo 1: Entrada dos dados
+      document.getElementById('step2-1').classList.add('active');
+      
+      const tarefaInput = document.getElementById('tarefa');
+      const prioridadeSelect = document.getElementById('prioridade');
+      
+      const descricao = tarefaInput.value.trim();
+      const prioridade = prioridadeSelect.value;
+      
+      // Validação da entrada
+      if (!descricao) {
+        alert('Por favor, digite uma descrição para a tarefa.');
+        return;
+      }
+      
+      // Simula o processamento passo a passo
+      setTimeout(() => {
+        // Passo 2: Classificação por prioridade
+        document.getElementById('step2-2').classList.add('active');
+        
+        setTimeout(() => {
+          // Passo 3: Organização da lista
+          document.getElementById('step2-3').classList.add('active');
+          
+          setTimeout(() => {
+            // Passo 4: Exibição ordenada
+            document.getElementById('step2-4').classList.add('active');
+            
+            // Cria um novo elemento de lista para a tarefa
+            const li = document.createElement('li');
+            li.className = `task-item task-priority-${prioridade}`;
+            
+            // Preenche o conteúdo da tarefa
+            li.innerHTML = `
+              <span>${descricao}</span>
+              <span class="priority-badge priority-${prioridade}">
+                ${prioridade === 'alta' ? 'Alta Prioridade' : 'Prioridade Normal'}
+              </span>
+            `;
+            
+            // Adiciona à lista na posição correta
+            const lista = document.getElementById('lista-tarefas');
+            if (prioridade === 'alta') {
+              // Tarefas de alta prioridade vão para o início
+              lista.insertBefore(li, lista.firstChild);
+            } else {
+              // Tarefas normais vão para o final
+              lista.appendChild(li);
+            }
+            
+            // Limpa o campo de entrada para nova tarefa
+            tarefaInput.value = '';
+            
+            // Mostra o código para referência
+            const codeBox = document.querySelector('#codigo2 .code-box');
+            if (codeBox) {
+              codeBox.style.display = 'block';
+            }
+          }, 500); // Pequeno atraso para a etapa 4
+        }, 500); // Pequeno atraso para a etapa 3
+      }, 500); // Pequeno atraso para a etapa 2
+    });
+
+    // ====== EXEMPLO 3: SEMÁFORO ======
+    let semaforoAtivo = false;
+    let intervaloContador;
+    let tempoRestante = 15;
+    let estadoAtualSemaforo = 'vermelho';
+    
+    // Definição dos tempos para cada estado (em segundos)
+    const tempos = {
+      'vermelho': 15,
+      'verde': 20,
+      'amarelo': 5
+    };
+    
+    // Botão Iniciar
+    document.getElementById('iniciar-btn').addEventListener('click', function() {
+      if (semaforoAtivo) return; // Evita múltiplas inicializações
+      
+      semaforoAtivo = true;
+      iniciarCicloSemaforo();
+      this.textContent = 'Semáforo em execução';
+      this.disabled = true;
+      
+      // Restaura cor do botão pausar
+      document.getElementById('pausar-btn').style.backgroundColor = '';
+    });
+    
+    // Botão Pausar
+    document.getElementById('pausar-btn').addEventListener('click', function() {
+      if (!semaforoAtivo) return;
+      
+      semaforoAtivo = false;
+      clearInterval(intervaloContador);
+      
+      document.getElementById('iniciar-btn').textContent = 'Continuar';
+      document.getElementById('iniciar-btn').disabled = false;
+      this.style.backgroundColor = '#7f8c8d';
+    });
+    
+    // Botão Resetar
+    document.getElementById('resetar-btn').addEventListener('click', function() {
+      semaforoAtivo = false;
+      clearInterval(intervaloContador);
+      
+      // Volta ao estado inicial
+      estadoAtualSemaforo = 'vermelho';
+      tempoRestante = 15;
+      
+      // Atualiza a interface visual
+      document.querySelectorAll('.light').forEach(luz => luz.classList.remove('active'));
+      document.getElementById('luz-vermelha').classList.add('active');
+      document.getElementById('estado-atual').textContent = 'Vermelho';
+      document.getElementById('contador').textContent = '15';
+      
+      // Reseta os botões
+      document.getElementById('iniciar-btn').textContent = 'Iniciar Semáforo';
+      document.getElementById('iniciar-btn').disabled = false;
+      document.getElementById('pausar-btn').style.backgroundColor = '#7f8c8d';
+      
+      // Reseta as etapas visuais
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step3-${i}`).classList.remove('active');
+      }
+    });
+    
+    // Função principal para iniciar o ciclo do semáforo
+    function iniciarCicloSemaforo() {
+      // Ativa a primeira etapa visual
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step3-${i}`).classList.remove('active');
+      }
+      document.getElementById('step3-1').classList.add('active');
+      
+      // Inicia o contador visual
+      atualizarContador();
+      
+      // Configura o intervalo para contagem regressiva
+      intervaloContador = setInterval(() => {
+        tempoRestante--;
+        document.getElementById('contador').textContent = tempoRestante;
+        
+        // Atualiza etapas visuais conforme o tempo passa
+        if (tempoRestante === Math.floor(tempos[estadoAtualSemaforo] / 2)) {
+          document.getElementById('step3-2').classList.add('active');
+        } else if (tempoRestante === 3) {
+          document.getElementById('step3-3').classList.add('active');
+        }
+        
+        // Quando chegar a 0, muda para o próximo estado
+        if (tempoRestante <= 0) {
+          mudarEstadoSemaforo();
+        }
+      }, 1000); // Atualiza a cada segundo
+      
+      // Mostra o código para referência
+      const codeBox = document.querySelector('#codigo3 .code-box');
+      if (codeBox) {
+        codeBox.style.display = 'block';
+      }
+    }
+    
+    // Função para mudar o estado do semáforo
+    function mudarEstadoSemaforo() {
+      // Define qual será o próximo estado na sequência
+      let proximoEstado;
+      if (estadoAtualSemaforo === 'vermelho') {
+        proximoEstado = 'verde';
+      } else if (estadoAtualSemaforo === 'verde') {
+        proximoEstado = 'amarelo';
+      } else {
+        proximoEstado = 'vermelho';
+      }
+      
+      // Atualiza as variáveis de estado
+      estadoAtualSemaforo = proximoEstado;
+      tempoRestante = tempos[proximoEstado];
+      
+      // Atualiza a interface visual do semáforo
+      document.querySelectorAll('.light').forEach(luz => luz.classList.remove('active'));
+      
+      // Ativa a luz correspondente ao estado atual
+      let luzId;
+      if (proximoEstado === 'vermelho') {
+        luzId = 'luz-vermelha';
+      } else if (proximoEstado === 'verde') {
+        luzId = 'luz-verde';
+      } else {
+        luzId = 'luz-amarela';
+      }
+      
+      document.getElementById(luzId).classList.add('active');
+      
+      // Atualiza os textos informativos
+      const estadoFormatado = proximoEstado.charAt(0).toUpperCase() + proximoEstado.slice(1);
+      document.getElementById('estado-atual').textContent = estadoFormatado;
+      document.getElementById('contador').textContent = tempoRestante;
+      
+      // Reseta e reinicia as etapas visuais
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step3-${i}`).classList.remove('active');
+      }
+      document.getElementById('step3-4').classList.add('active');
+      
+      // Volta para a primeira etapa após 1 segundo
+      setTimeout(() => {
+        document.getElementById('step3-1').classList.add('active');
+      }, 1000);
+    }
+    
+    // Função auxiliar para atualizar o contador visual
+    function atualizarContador() {
+      document.getElementById('contador').textContent = tempoRestante;
+    }
+
+    // ====== KAHOOT ======
+    const perguntas = [
+      {
+        pergunta: "Pergunta 1: No Sistema de Aprovação, qual estrutura de programação é utilizada para tomar decisões?",
+        opcoes: [
+          "Estruturas condicionais (if/else)",
+          "Laços de repetição (for/while)",
+          "Funções matemáticas",
+          "Variáveis globais"
+        ],
+        respostaCorreta: 0
+      },
+      {
+        pergunta: "Pergunta 2: No Organizador de Tarefas, o que acontece quando uma tarefa é marcada como 'Alta Prioridade'?",
+        opcoes: [
+          "Ela aparece no final da lista",
+          "Ela é automaticamente excluída",
+          "Ela aparece no início da lista",
+          "Ela muda de cor para azul"
+        ],
+        respostaCorreta: 2
+      },
+      {
+        pergunta: "Pergunta 3: No Semáforo Inteligente, qual é a sequência CORRETA de estados?",
+        opcoes: [
+          "Vermelho → Verde → Amarelo",
+          "Verde → Vermelho → Amarelo",
+          "Amarelo → Verde → Vermelho",
+          "Vermelho → Amarelo → Verde"
+        ],
+        respostaCorreta: 0
+      },
+      {
+        pergunta: "Pergunta 4: Qual dos três exemplos demonstra um sistema baseado em TEMPO?",
+        opcoes: [
+          "Sistema de Aprovação",
+          "Organizador de Tarefas",
+          "Semáforo Inteligente",
+          "Todos os exemplos"
+        ],
+        respostaCorreta: 2
+      },
+      {
+        pergunta: "Pergunta 5: O pensamento computacional envolve principalmente:",
+        opcoes: [
+          "Decorar comandos de programação",
+          "Resolver problemas de forma lógica e estruturada",
+          "Saber matemática avançada",
+          "Ter um computador potente"
+        ],
+        respostaCorreta: 1
+      }
+    ];
+    
+    let perguntaAtual = 0;
+    let pontuacao = 0;
+    let respostaSelecionada = null;
+    
+    // Inicializa o quiz carregando a primeira pergunta
+    carregarPergunta();
+    
+    // Botão Verificar Resposta
+    document.getElementById('verificar-btn').addEventListener('click', function() {
+      if (respostaSelecionada === null) {
+        alert('Por favor, selecione uma resposta antes de verificar.');
+        return;
+      }
+      
+      const opcoes = document.querySelectorAll('.option');
+      const correta = perguntas[perguntaAtual].respostaCorreta;
+      
+      // Prepara o feedback
+      const feedbackDiv = document.getElementById('feedback');
+      
+      if (respostaSelecionada === correta) {
+        feedbackDiv.textContent = '✅ Resposta correta! Você entendeu o conceito.';
+        feedbackDiv.style.backgroundColor = 'rgba(39, 174, 96, 0.1)';
+        feedbackDiv.style.color = '#1e7e34';
+        pontuacao += 10;
+      } else {
+        feedbackDiv.textContent = `❌ Resposta incorreta. A opção correta é: "${perguntas[perguntaAtual].opcoes[correta]}"`;
+        feedbackDiv.style.backgroundColor = 'rgba(231, 76, 60, 0.1)';
+        feedbackDiv.style.color = '#721c24';
+      }
+      
+      feedbackDiv.style.display = 'block';
+      
+      // Atualiza a pontuação na tela
+      document.getElementById('pontuacao').textContent = pontuacao;
+      
+      // Desabilita o botão de verificação até a próxima pergunta
+      this.disabled = true;
+    });
+    
+    // Botão Próxima Pergunta
+    document.getElementById('proxima-btn').addEventListener('click', function() {
+      perguntaAtual++;
+      
+      // Verifica se chegou ao final do quiz
+      if (perguntaAtual >= perguntas.length) {
+        // Quiz finalizado - mostra resultados
+        document.getElementById('pergunta').textContent = 'Quiz Concluído!';
+        document.getElementById('opcoes').innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 2rem;">
+            <h3 style="color: #27ae60; margin-bottom: 1rem;">🎉 Parabéns! Você completou o quiz!</h3>
+            <p>Sua pontuação final: <strong>${pontuacao} pontos</strong> de ${perguntas.length * 10} possíveis</p>
+            <p style="margin-top: 1rem;">${pontuacao >= 40 ? 'Excelente! Você demonstrou um ótimo entendimento dos conceitos.' : 
+                               pontuacao >= 30 ? 'Bom trabalho! Você compreendeu a maioria dos conceitos.' : 
+                               'Continue estudando! Revise os exemplos para fixar melhor os conceitos.'}</p>
+          </div>
+        `;
+        document.getElementById('verificar-btn').style.display = 'none';
+        this.textContent = 'Reiniciar Quiz';
+        this.onclick = function() {
+          location.reload();
+        };
+        return;
+      }
+      
+      // Carrega a próxima pergunta
+      carregarPergunta();
+      
+      // Reabilita o botão de verificação
+      document.getElementById('verificar-btn').disabled = false;
+      
+      // Esconde o feedback da pergunta anterior
+      document.getElementById('feedback').style.display = 'none';
+    });
+    
+    // Função para carregar uma pergunta no quiz
+    function carregarPergunta() {
+      const perguntaData = perguntas[perguntaAtual];
+      
+      // Atualiza o texto da pergunta
+      document.getElementById('pergunta').textContent = perguntaData.pergunta;
+      
+      // Limpa as opções anteriores
+      const opcoesDiv = document.getElementById('opcoes');
+      opcoesDiv.innerHTML = '';
+      
+      // Cria as novas opções
+      perguntaData.opcoes.forEach((opcao, index) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.textContent = opcao;
+        div.dataset.index = index;
+        
+        // Adiciona evento de clique para selecionar a opção
+        div.addEventListener('click', function() {
+          // Remove a seleção anterior
+          document.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          
+          // Seleciona esta opção
+          this.classList.add('selected');
+          respostaSelecionada = parseInt(this.dataset.index);
+        });
+        
+        opcoesDiv.appendChild(div);
+      });
+      
+      // Atualiza o texto do botão "Próxima"
+      document.getElementById('proxima-btn').textContent = 
+        perguntaAtual === perguntas.length - 1 ? 'Ver Resultado Final' : 'Próxima Pergunta';
+    }
+
+    // Atualiza navegação ativa ao rolar a página
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      let current = '';
+      
+      // Verifica qual seção está visível
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        if (scrollY >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      // Atualiza os links de navegação
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
